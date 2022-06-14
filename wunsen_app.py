@@ -7,6 +7,8 @@ st.title('Wunsen Demo')
 lang_option = st.selectbox('เลือกภาษา',
     ('ญี่ปุ่น | Japanese', 'เกาหลี | Korean', 'เวียดนาม | Vietnamese'))
 
+need_romaji = False
+
 match lang_option:
     case 'ญี่ปุ่น | Japanese':
         lang_selected = 'ja'
@@ -21,8 +23,9 @@ match lang_option:
                 input_selected = 'Hepburn-no diacritic'
                 placeholder = 'ohayou'
             case 'ญี่ปุ่น (ทดลอง)':
-                input_selected = 'JAPANESE'
+                input_selected = 'Hepburn-no diacritic'
                 placeholder = 'おはよう'
+                need_romaji = True
     case 'เกาหลี | Korean':
         lang_selected = 'ko'
         input_selected = 'RR'
@@ -34,15 +37,19 @@ match lang_option:
 
 text = st.text_area('Input', max_chars=700, placeholder=placeholder)
 
-match input_selected:
-    case 'JAPANESE':
+if text is not None:
+    
+    thap_sap = ThapSap(lang_selected, input=input_selected)
+
+    text_split = text.splitlines()
+    
+    if need_romaji:
         katsu = Cutlet()
         katsu.use_foreign_spelling = False
-        thap_sap = ThapSap(lang_selected, input='Hepburn-no diacritic')
-        st.write(thap_sap.thap(katsu.romaji(text)))
-    case _:
-        thap_sap = ThapSap(lang_selected, input=input_selected)
-        st.write(thap_sap.thap(text))
+        text_split = [katsu.romaji(ja_line) for ja_line in text_split]
+
+    for line in text_split:
+        st.write(thap_sap.thap(line))
 
 st.caption("""### หมายเหตุ
 
