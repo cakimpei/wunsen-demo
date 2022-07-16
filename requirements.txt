@@ -1,4 +1,6 @@
-streamlit==1.9.2
+streamlit==1.11.0
+pypinyin==0.46.0
 cutlet==0.1.19
 unidic-lite==1.0.8
+korean-romanizer==0.24
 wunsen==0.0.2
