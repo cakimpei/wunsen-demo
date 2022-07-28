@@ -3,6 +3,7 @@ from pypinyin import lazy_pinyin, Style
 from cutlet import Cutlet
 from korean_romanizer.romanizer import Romanizer
 from wunsen import ThapSap
+from romanizer import convert_zh_pinyin
 
 st.title('Wunsen Demo')
 
@@ -44,7 +45,7 @@ match lang_option:
             case 'จีน > พินอิน > ไทย (ทดลอง)':
                 placeholder = '你好'
                 need_pinyin = True
-                need_sandhi = False
+                need_sandhi = True
     case 'ญี่ปุ่น | Japanese':
         lang_selected = 'ja'
         system_selected = 'ORS61'
@@ -94,11 +95,7 @@ if text is not None:
     text_split = text.splitlines()
 
     if need_pinyin:
-        new_text_split = []
-        for zh_line in text_split:
-            zh_text = lazy_pinyin(zh_line, style=Style.TONE3, tone_sandhi=True)
-            new_text_split.append(' '.join(zh_text))
-        text_split = new_text_split
+        text_split = [convert_zh_pinyin(zh_line) for zh_line in text_split]
     elif need_romaji:
         katsu = Cutlet()
         katsu.use_foreign_spelling = False
@@ -119,7 +116,7 @@ st.caption("""### หมายเหตุ
 
 wunsen ไม่มีส่วนเกี่ยวข้องกับผู้กำหนดแนวทางการทับศัพท์แต่อย่างใด
 
-ตัวเลือก "(ทดลอง)" ใช้ python-pinyin, Cutlet, korean-romanizer เปลี่ยนจากภาษาต้นทางเป็นตัวอักษรโรมัน แล้วค่อยเปลี่ยนเป็นไทย
+ตัวเลือก "(ทดลอง)" ใช้ jieba ในการตัดคำ (ภาษาจีน) และใช้ python-pinyin, Cutlet, korean-romanizer เปลี่ยนจากภาษาต้นทางเป็นตัวอักษรโรมัน แล้วค่อยใช้ wunsen เปลี่ยนเป็นไทย
 
 [source](https://github.com/cakimpei/wunsen-heroku)
 """)
