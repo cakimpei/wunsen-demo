@@ -49,10 +49,18 @@ match lang_option:
     case 'ญี่ปุ่น | Japanese':
         lang_selected = 'ja'
         system_selected = 'ORS61'
-        ja_option = st.radio('ตัวเลือก input',
+        ja_option = st.radio('รูปแบบการทับศัพท์',
+            ('หลักเกณฑ์การทับศัพท์ภาษาญี่ปุ่น พ.ศ. 2561',
+            'หลักเกณฑ์การทับศัพท์ภาษาญี่ปุ่น พ.ศ. 2535'))
+        match ja_option:
+            case 'หลักเกณฑ์การทับศัพท์ภาษาญี่ปุ่น พ.ศ. 2561':
+                system_selected = 'ORS61'
+            case 'หลักเกณฑ์การทับศัพท์ภาษาญี่ปุ่น พ.ศ. 2535':
+                system_selected = 'RI35'
+        ja_input = st.radio('ตัวเลือก input',
             ('Hepburn romanization', 'Hepburn แบบไม่มี macron',
             'ญี่ปุ่น > Hepburn > ไทย (ทดลอง)'))
-        match ja_option:
+        match ja_input:
             case 'Hepburn romanization':
                 input_selected = 'Hepburn-macron'
                 placeholder = 'ohayō'

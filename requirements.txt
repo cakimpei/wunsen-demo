@@ -4,4 +4,4 @@ pypinyin==0.46.0
 cutlet==0.1.19
 unidic-lite==1.0.8
 korean-romanizer==0.24
-wunsen==0.0.2
+wunsen==0.0.3
